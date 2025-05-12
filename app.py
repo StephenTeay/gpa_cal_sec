@@ -58,6 +58,7 @@ def reset_form():
 
 def main():
     st.title("GPA Calculator")
+    st.title("Simply add your scores from the portal in the order it was posted ")
     
     if 'submitted' not in st.session_state:
         st.session_state.submitted = False
@@ -68,7 +69,7 @@ def main():
         
         for i in range(10):
             score = st.number_input(
-                f"Score {i+1}:",
+                f"Course{i+1}:",
                 min_value=0,
                 max_value=100,
                 value=st.session_state.get(f"score_{i}", 0),
