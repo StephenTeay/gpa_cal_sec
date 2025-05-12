@@ -58,7 +58,7 @@ def reset_form():
 
 def main():
     st.title("GPA Calculator")
-    st.title("Simply add your scores from the portal in the order it was posted ")
+    st.write("Simply add your scores from the portal in the order it was posted ")
     
     if 'submitted' not in st.session_state:
         st.session_state.submitted = False
