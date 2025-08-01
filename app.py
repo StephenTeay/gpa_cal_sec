@@ -118,27 +118,26 @@ def main():
         scores = []
         units = []
        
-        with course_button:
-            for i in range(courses_number):
-                score_column, unit_column = st.column([4,4])
-                with score_column:
-                    score = st.number_input(
+        for i in range(courses_number):
+            score_column, unit_column = st.column([4,4])
+            with score_column:
+                score = st.number_input(
                         f"Course {i+1}:",
                         min_value=0,
                         max_value=100,
                         value=st.session_state.get(f"score_{i}", 0),
                         key=f"score_{i}"
-                    )
-                    scores.append(score)
-                with unit_column:
+                )
+                scores.append(score)
+            with unit_column:
                     unit = st.number_input(
                         f"Unit for course {i+1}:",
                         min_value=1,
                         max_value=6,
                         value=st.session_state.get(f"unit_{i}", 1),
                         key=f"unit_{i}"
-                    )
-                    units.append(score)
+                )
+                units.append(score)
             
         
             col1, col2 = st.columns([6, 6])
