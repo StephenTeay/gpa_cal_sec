@@ -109,13 +109,15 @@ def main():
     
     if 'submitted' not in st.session_state:
         st.session_state.submitted = False
+        
+    courses_number = st.number_input(f"Number of courses offered: ")
+    course_button = st.button("Next")
     
     with st.form("gpa_form"):
         st.header("Enter Scores")
         scores = []
         units = []
-        courses_number = st.number_input(f"Number of courses offered: ")
-        course_button = st.button("Next")
+       
         with course_button:
             for i in range(courses_number):
                 score_column, unit_column = st.column([4,4])
