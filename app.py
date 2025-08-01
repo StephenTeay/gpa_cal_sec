@@ -147,7 +147,7 @@ def main():
             st.form_submit_button("Reset", on_click=reset_form)
 
         if submitted:
-            if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
+            if len(scores) != courses_number or any(s < 0 or s > 100 for s in scores):
                 st.error("Please enter valid scores (0-100) for all 9 subjects")
             else:
                 st.session_state.submitted = True
