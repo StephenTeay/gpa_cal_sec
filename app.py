@@ -115,82 +115,84 @@ def main():
         scores = []
         units = []
         courses_number = st.number_input(f"Number of courses offered: ")
-        for i in range(courses_number):
-            score_column, unit_column = st.column([4,4])
-            with score_column:
-                score = st.number_input(
-                    f"Course {i+1}:",
-                    min_value=0,
-                    max_value=100,
-                    value=st.session_state.get(f"score_{i}", 0),
-                    key=f"score_{i}"
-                )
-                scores.append(score)
-            with unit_column:
-                unit = st.number_input(
-                    f"Unit for course {i+1}:",
-                    min_value=1,
-                    max_value=6,
-                    value=st.session_state.get(f"unit_{i}", 1),
-                    key=f"unit_{i}"
-                )
-                units.append(score)
+        course_button = st.button("Next")
+        with course_button:
+            for i in range(courses_number):
+                score_column, unit_column = st.column([4,4])
+                with score_column:
+                    score = st.number_input(
+                        f"Course {i+1}:",
+                        min_value=0,
+                        max_value=100,
+                        value=st.session_state.get(f"score_{i}", 0),
+                        key=f"score_{i}"
+                    )
+                    scores.append(score)
+                with unit_column:
+                    unit = st.number_input(
+                        f"Unit for course {i+1}:",
+                        min_value=1,
+                        max_value=6,
+                        value=st.session_state.get(f"unit_{i}", 1),
+                        key=f"unit_{i}"
+                    )
+                    units.append(score)
             
         
-        col1, col2 = st.columns([6, 6])
-        with col1:
-            submitted = st.form_submit_button("Calculate GPA")
-        with col2:
-            st.form_submit_button("Reset", on_click=reset_form)
+            col1, col2 = st.columns([6, 6])
+            with col1:
+                submitted = st.form_submit_button("Calculate GPA")
+            with col2:
+                st.form_submit_button("Reset", on_click=reset_form)
 
-    if submitted:
-        if len(scores) != 9 or any(s < 0 or s > 100 for s in scores):
-            st.error("Please enter valid scores (0-100) for all 9 subjects")
-        else:
-            st.session_state.submitted = True
-            gpa, grade_distribution = calculate_gpa_all(scores,units)
+        if submitted:
+            if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
+                st.error("Please enter valid scores (0-100) for all 9 subjects")
+            else:
+                st.session_state.submitted = True
+                gpa, grade_distribution = calculate_gpa_all(scores,units)
     
-    if st.session_state.submitted:
-        st.success(f"Your GPA: {gpa:.2f}")
-        st.write("---")
+        if st.session_state.submitted:
+            st.success(f"Your GPA: {gpa:.2f}")
+            st.write("---")
         
         # Grade Distribution Visualization
-        st.subheader("Grade Distribution")
+            st.subheader("Grade Distribution")
         
         # Create DataFrame for visualization
-        df = pd.DataFrame(
-            list(grade_distribution.items()),
-            columns=["Grade Range", "Count"]
-        ).set_index("Grade Range")
+            df = pd.DataFrame(
+                list(grade_distribution.items()),
+                columns=["Grade Range", "Count"]
+            ).set_index("Grade Range")
         
         # Bar Chart
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            st.bar_chart(df)
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.bar_chart(df)
         
         # Data Table
-        with col2:
-            st.write("**Distribution Table**")
-            st.dataframe(df.T, use_container_width=True)
+            with col2:
+                st.write("**Distribution Table**")
+                st.dataframe(df.T, use_container_width=True)
         
         # Pie Chart
-        st.write("---")
-        st.subheader("Grade Proportion")
+            st.write("---")
+            st.subheader("Grade Proportion")
         
-        fig, ax = plt.subplots()
-        ax.pie(
-            df["Count"],
-            labels=df.index,
-            autopct="%1.1f%%",
-            startangle=90
-        )
-        ax.axis("equal")  # Equal aspect ratio ensures pie is drawn as circle
-        st.pyplot(fig)
+            fig, ax = plt.subplots()
+            ax.pie(
+                df["Count"],
+                labels=df.index,
+                autopct="%1.1f%%",
+                startangle=90
+            )
+            ax.axis("equal")  # Equal aspect ratio ensures pie is drawn as circle
+            st.pyplot(fig)
 
         # Calculate Again button
-        st.write("---")
-        if st.button("Calculate Again"):
-            reset_form()
+            st.write("---")
+            if st.button("Calculate Again"):
+                reset_form()
 
 if __name__ == "__main__":
     main()
