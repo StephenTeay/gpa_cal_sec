@@ -84,8 +84,8 @@ def main():
             st.form_submit_button("Reset", on_click=reset_form)
 
     if submitted:
-        if len(scores) != 10 or any(s < 0 or s > 100 for s in scores):
-            st.error("Please enter valid scores (0-100) for all 10 subjects")
+        if len(scores) != 9 or any(s < 0 or s > 100 for s in scores):
+            st.error("Please enter valid scores (0-100) for all 9 subjects")
         else:
             st.session_state.submitted = True
             gpa, grade_distribution = calculate_gpa(scores)
