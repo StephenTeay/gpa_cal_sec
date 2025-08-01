@@ -118,7 +118,7 @@ def main():
         scores = []
         units = []
        
-        for i in range(courses_number):
+        for i in range(int(courses_number)):
             score_column, unit_column = st.column([4,4])
             with score_column:
                 score = st.number_input(
