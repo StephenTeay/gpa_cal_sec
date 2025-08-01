@@ -146,12 +146,12 @@ def main():
             with col2:
                 st.form_submit_button("Reset", on_click=reset_form)
 
-        if submitted:
-            if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
-                st.error("Please enter valid scores (0-100) for all 9 subjects")
-            else:
-                st.session_state.submitted = True
-                gpa, grade_distribution = calculate_gpa_all(scores,units)
+            if submitted:
+                if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
+                    st.error("Please enter valid scores (0-100) for all 9 subjects")
+                else:
+                    st.session_state.submitted = True
+                    gpa, grade_distribution = calculate_gpa_all(scores,units)
     
         if st.session_state.submitted:
             st.success(f"Your GPA: {gpa:.2f}")
