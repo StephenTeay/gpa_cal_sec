@@ -2,6 +2,53 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def calculate_gpa_all(scores,credit):
+    credit_sum = sum(credit)
+    grade_distribution = {
+        "Below 40 (0.00)": 0,
+        "40-44 (2.25)": 0,
+        "45-49 (2.50)": 0,
+        "50-54 (2.75)": 0,
+        "55-59 (3.00)": 0,
+        "60-64 (3.25)": 0,
+        "65-69 (3.50)": 0,
+        "70-74 (3.75)": 0,
+        "75-100 (4.00)": 0
+    }
+    grade = []
+    for r in scores:
+        if 40 <= r <= 44:
+            grade.append(2.25)
+            grade_distribution["40-44 (2.25)"] += 1
+        elif 45 <= r <= 49:
+            grade.append(2.50)
+            grade_distribution["45-49 (2.50)"] += 1
+        elif 50 <= r <= 54:
+            grade.append(2.75)
+            grade_distribution["50-54 (2.75)"] += 1
+        elif 55 <= r <= 59:
+            grade.append(3.00)
+            grade_distribution["55-59 (3.00)"] += 1
+        elif 60 <= r <= 64:
+            grade.append(3.25)
+            grade_distribution["60-64 (3.25)"] += 1
+        elif 65 <= r <= 69:
+            grade.append(3.50)
+            grade_distribution["65-69 (3.50)"] += 1
+        elif 70 <= r <= 74:
+            grade.append(3.75)
+            grade_distribution["70-74 (3.75)"] += 1
+        elif 75 <= r <= 100:
+            grade.append(4.00)
+            grade_distribution["75-100 (4.00)"] += 1
+        else:
+            grade.append(0)
+            grade_distribution["Below 40 (0.00)"] += 1
+    
+    product = [credit[c] * grade[c] for c in range(len(credit))]
+    return sum(product) / credit_sum, grade_distribution
+    
+    
 def calculate_gpa(scores):
     credit = [4, 3, 2, 3, 3, 2, 2, 2, 2]
     credit_sum = sum(credit)
@@ -66,18 +113,31 @@ def main():
     with st.form("gpa_form"):
         st.header("Enter Scores")
         scores = []
+        units = []
+        courses_number = st.number_input(f"Number of courses offered: ")
+        for i in range(courses_number):
+            score_column, unit_column = st.column([4,4])
+            with score_column:
+                score = st.number_input(
+                    f"Course {i+1}:",
+                    min_value=0,
+                    max_value=100,
+                    value=st.session_state.get(f"score_{i}", 0),
+                    key=f"score_{i}"
+                )
+                scores.append(score)
+            with unit_column:
+                unit = st.number_input(
+                    f"Unit for course {i+1}:",
+                    min_value=1,
+                    max_value=6,
+                    value=st.session_state.get(f"unit_{i}", 1),
+                    key=f"unit_{i}"
+                )
+                units.append(score)
+            
         
-        for i in range(9):
-            score = st.number_input(
-                f"Course{i+1}:",
-                min_value=0,
-                max_value=100,
-                value=st.session_state.get(f"score_{i}", 0),
-                key=f"score_{i}"
-            )
-            scores.append(score)
-        
-        col1, col2 = st.columns([1, 6])
+        col1, col2 = st.columns([6, 6])
         with col1:
             submitted = st.form_submit_button("Calculate GPA")
         with col2:
@@ -88,7 +148,7 @@ def main():
             st.error("Please enter valid scores (0-100) for all 9 subjects")
         else:
             st.session_state.submitted = True
-            gpa, grade_distribution = calculate_gpa(scores)
+            gpa, grade_distribution = calculate_gpa_all(scores,units)
     
     if st.session_state.submitted:
         st.success(f"Your GPA: {gpa:.2f}")
