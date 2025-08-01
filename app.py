@@ -137,7 +137,7 @@ def main():
                         value=st.session_state.get(f"unit_{i}", 1),
                         key=f"unit_{i}"
                 )
-                units.append(score)
+                    units.append(unit)
             
         
             col1, col2 = st.columns([6, 6])
