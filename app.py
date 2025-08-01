@@ -119,7 +119,7 @@ def main():
         units = []
        
         for i in range(int(courses_number)):
-            score_column, unit_column = st.column([4,4])
+            score_column, unit_column = st.columns([4,4])
             with score_column:
                 score = st.number_input(
                         f"Course {i+1}:",
@@ -140,18 +140,18 @@ def main():
                     units.append(unit)
             
         
-            col1, col2 = st.columns([6, 6])
-            with col1:
-                submitted = st.form_submit_button("Calculate GPA")
-            with col2:
-                st.form_submit_button("Reset", on_click=reset_form)
+        col1, col2 = st.columns([6, 6])
+        with col1:
+            submitted = st.form_submit_button("Calculate GPA")
+        with col2:
+            st.form_submit_button("Reset", on_click=reset_form)
 
-            if submitted:
-                if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
-                    st.error("Please enter valid scores (0-100) for all 9 subjects")
-                else:
-                    st.session_state.submitted = True
-                    gpa, grade_distribution = calculate_gpa_all(scores,units)
+        if submitted:
+            if len(scores) != course_number or any(s < 0 or s > 100 for s in scores):
+                st.error("Please enter valid scores (0-100) for all 9 subjects")
+            else:
+                st.session_state.submitted = True
+                gpa, grade_distribution = calculate_gpa_all(scores,units)
     
         if st.session_state.submitted:
             st.success(f"Your GPA: {gpa:.2f}")
