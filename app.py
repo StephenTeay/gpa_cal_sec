@@ -67,7 +67,7 @@ def main():
         st.header("Enter Scores")
         scores = []
         
-        for i in range(10):
+        for i in range(9):
             score = st.number_input(
                 f"Course{i+1}:",
                 min_value=0,
