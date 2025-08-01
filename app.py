@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def calculate_gpa(scores):
-    credit = [3, 3, 3, 4, 3, 3, 4, 2, 2, 2]
+    credit = [4, 3, 2, 3, 3, 2, 2, 2, 2]
     credit_sum = sum(credit)
     
     grade = []
