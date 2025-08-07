@@ -194,6 +194,5 @@ def main():
             st.write("---")
         if st.button("Calculate Again"):
             reset_form()
-
 if __name__ == "__main__":
     main()
